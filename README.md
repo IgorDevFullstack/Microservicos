@@ -1,6 +1,7 @@
 🧩 Projeto de Microserviços: Cliente e Produto
 
 Este projeto é um sistema básico composto por dois microserviços independentes: Cliente Service e Produto Service. Ambos são desenvolvidos com Spring Boot, Java 17, PostgreSQL e Docker para facilitar o desenvolvimento e a escalabilidade.
+
 📦 Tecnologias Utilizadas
 
     Java 17
@@ -16,8 +17,10 @@ Este projeto é um sistema básico composto por dois microserviços independente
     Maven
 
     Lombok
+    
 
 📁 Estrutura dos Microserviços
+
 🔹 cliente-service
 
 Responsável por gerenciar os dados dos clientes.
@@ -29,6 +32,7 @@ GET	/clientes	Listar todos os clientes
 GET	/clientes/{id}	Buscar cliente por ID
 PUT	/clientes/{id}	Atualizar cliente
 DELETE	/clientes/{id}	Remover cliente
+
 🔹 produto-service
 
 Responsável por gerenciar os dados dos produtos.
@@ -40,6 +44,7 @@ GET	/produtos	Listar todos os produtos
 GET	/produtos/{id}	Buscar produto por ID
 PUT	/produtos/{id}	Atualizar produto
 DELETE	/produtos/{id}	Remover produto
+
 ⚙️ Como Executar
 
     Criar os bancos no PostgreSQL:
