@@ -1,0 +1,7 @@
+com\micro\produto\controller\ProdutoController.class
+com\micro\produto\dto\ProdutoDTO.class
+com\micro\produto\model\Produto.class
+com\micro\produto\ProdutoServiceApplication.class
+com\micro\produto\service\ProdutoService.class
+com\micro\produto\mapper\ProdutoMapper.class
+com\micro\produto\repository\ProdutoRepository.class

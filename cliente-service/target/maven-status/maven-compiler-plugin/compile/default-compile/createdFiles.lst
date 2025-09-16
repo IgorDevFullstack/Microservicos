@@ -1,5 +1,7 @@
+com\micro\cliente\mapper\ClienteMapper.class
 com\micro\cliente\model\Cliente.class
+com\micro\cliente\repository\ClienteRepository.class
 com\micro\cliente\controller\ClienteController.class
+com\micro\cliente\dto\ClienteDTO.class
 com\micro\cliente\service\ClienteService.class
 com\micro\cliente\ClienteServiceApplication.class
-com\micro\cliente\repository\ClienteRepository.class

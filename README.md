@@ -1,96 +1,148 @@
-🧩 Projeto de Microserviços: Cliente e Produto
+# 🛠️ Microservices Project: Customer & Product
 
-Este projeto é um sistema básico composto por dois microserviços independentes: Cliente Service e Produto Service. Ambos são desenvolvidos com Spring Boot, Java 17, PostgreSQL e Docker para facilitar o desenvolvimento e a escalabilidade.
+This project demonstrates a **microservices architecture** built with **Java 17 + Spring Boot 3**, **PostgreSQL**, **Docker**, and **Swagger/OpenAPI**.  
+The system is composed of two independent services:
 
-📦 Tecnologias Utilizadas
+- **Customer Service** → Manage customers  
+- **Product Service** → Manage products  
 
-    Java 17
+Each service has its own database and can be scaled independently.
 
-    Spring Boot 3.2
+---
 
-    Spring Data JPA
+## 🚀 Tech Stack
 
-    PostgreSQL
+- Java 17  
+- Spring Boot 3.2  
+- Spring Data JPA  
+- PostgreSQL  
+- Docker & Docker Compose  
+- Springdoc OpenAPI (Swagger UI)  
+- Lombok  
+- pgAdmin 4  
 
-    Docker
+---
 
-    Maven
+## 🏗️ Architecture
 
-    Lombok
-    
++------------------+ +-------------------+
+| Customer Service| | Product Service |
+| (Spring Boot) | | (Spring Boot) |
+| Port: 8081 | | Port: 8082 |
++---------+--------+ +---------+---------+
+| |
+v v
++------------------+ +-------------------+
+| PostgreSQL | | PostgreSQL |
+| DB: clientedb | | DB: produtodb |
+| Port: 5433 | | Port: 5434 |
++------------------+ +-------------------+
 
-📁 Estrutura dos Microserviços
 
-🔹 cliente-service
+---
 
-Responsável por gerenciar os dados dos clientes.
+## 📦 Getting Started
 
-Endpoints:
-Método	Rota	Descrição
-POST	/clientes	Criar novo cliente
-GET	/clientes	Listar todos os clientes
-GET	/clientes/{id}	Buscar cliente por ID
-PUT	/clientes/{id}	Atualizar cliente
-DELETE	/clientes/{id}	Remover cliente
+### 1) Requirements
+- [Docker](https://www.docker.com/products/docker-desktop) installed and running  
+- [Maven](https://maven.apache.org/) (if you want to run locally without Docker)
 
-🔹 produto-service
+### 2) Clone the repository
+```bash
+git clone https://github.com/your-username/Microservices.git
+cd Microservices
 
-Responsável por gerenciar os dados dos produtos.
+3) Build and run with Docker
 
-Endpoints:
-Método	Rota	Descrição
-POST	/produtos	Criar novo produto
-GET	/produtos	Listar todos os produtos
-GET	/produtos/{id}	Buscar produto por ID
-PUT	/produtos/{id}	Atualizar produto
-DELETE	/produtos/{id}	Remover produto
+docker compose build
+docker compose up -d
 
-⚙️ Como Executar
+4) Check running containers
 
-    Criar os bancos no PostgreSQL:
+docker ps
 
-        Acesse o PgAdmin ou o terminal:
+Expected containers:
 
-CREATE DATABASE clientedb;
-CREATE DATABASE produtodb;
+    customer-service → port 8081
 
-Editar application.properties de cada serviço:
+    product-service → port 8082
 
-Exemplo cliente-service:
+    postgres-clientes → port 5433
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/clientedb
-spring.datasource.username=postgres
-spring.datasource.password=senha
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-server.port=8081
+    postgres-produtos → port 5434
 
-Exemplo produto-service:
+    pgadmin → port 5050
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/produtodb
-spring.datasource.username=postgres
-spring.datasource.password=senha
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-server.port=8082
+📖 API Documentation
 
-Executar os microserviços:
+Each service exposes its own Swagger/OpenAPI docs:
 
-    mvn spring-boot:run
+    Customer Service → http://localhost:8081/swagger-ui.html
 
-🧪 Testando os serviços
+Product Service → http://localhost:8082/swagger-ui.html
+🧪 Example Requests (cURL)
+Create a Customer
 
-Use o Postman ou o curl para testar os endpoints:
+curl -X POST http://localhost:8081/customers \
+ -H "Content-Type: application/json" \
+ -d '{"name":"Maria Silva","email":"maria@email.com","phone":"11999999999"}'
 
-# Exemplo: Cadastrar um cliente
-curl -X POST http://localhost:8081/clientes \
--H "Content-Type: application/json" \
--d '{"nome":"Maria","email":"maria@email.com","telefone":"119999999"}'
+List Customers
 
-🚀 Futuras Implementações
+curl http://localhost:8081/customers
 
-    Integração entre serviços com Spring Cloud / Eureka
+Create a Product
 
-    Autenticação com JWT
+curl -X POST http://localhost:8082/products \
+ -H "Content-Type: application/json" \
+ -d '{"name":"Mechanical Keyboard","price":250.0,"description":"Blue switch"}'
 
-  
+List Products
+
+curl http://localhost:8082/products
+
+🗂️ Accessing Database via pgAdmin
+
+    URL: http://localhost:5050
+
+    Login: admin@admin.com
+
+    Password: admin
+
+Add new servers:
+
+    Customer DB
+
+        Host: postgres-clientes
+
+        Port: 5432
+
+        User: postgres
+
+        Password: senha
+
+        Database: clientedb
+
+    Product DB
+
+        Host: postgres-produtos
+
+        Port: 5432
+
+        User: postgres
+
+        Password: senha
+
+        Database: produtodb
+
+✅ Roadmap
+
+Implement pagination and filters in endpoints
+
+Add integration tests with Testcontainers
+
+Add healthchecks in docker-compose.yml
+
+Setup CI/CD with GitHub Actions
+
+Deploy to cloud (AWS/GCP/Azure/Render)

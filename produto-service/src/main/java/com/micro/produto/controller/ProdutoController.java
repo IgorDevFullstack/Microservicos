@@ -1,8 +1,11 @@
 package com.micro.produto.controller;
 
+import com.micro.produto.dto.ProdutoDTO;
+import com.micro.produto.mapper.ProdutoMapper;
 import com.micro.produto.model.Produto;
 import com.micro.produto.service.ProdutoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,40 +15,55 @@ import java.util.List;
 @RequestMapping("/produtos")
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoService service;
+    private final ProdutoService service;
 
+    public ProdutoController(ProdutoService service) {
+        this.service = service;
+    }
+
+    // CREATE
     @PostMapping
-    public Produto salvar(@RequestBody Produto p) {
-        return service.salvar(p);
+    public ResponseEntity<ProdutoDTO> create(@RequestBody @Valid ProdutoDTO dto) {
+        Produto entity = ProdutoMapper.toEntity(dto);
+        Produto saved  = service.salvar(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProdutoMapper.toDTO(saved));
     }
 
+    // READ - list
     @GetMapping
-    public List<Produto> listar() {
-        return service.listar();
+    public ResponseEntity<List<ProdutoDTO>> listar() {
+        List<ProdutoDTO> out = service.listar()
+                .stream().map(ProdutoMapper::toDTO).toList();
+        return ResponseEntity.ok(out);
     }
 
+    // READ - by id
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscar(@PathVariable Long id) {
+    public ResponseEntity<ProdutoDTO> buscar(@PathVariable Long id) {
         return service.buscar(id)
-                      .map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+                .map(p -> ResponseEntity.ok(ProdutoMapper.toDTO(p)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto p) {
-        return service.buscar(id).map(produto -> {
-            produto.setNome(p.getNome());
-            produto.setDescricao(p.getDescricao());
-            produto.setPreco(p.getPreco());
-            return ResponseEntity.ok(service.salvar(produto));
+    public ResponseEntity<ProdutoDTO> atualizar(@PathVariable Long id,
+                                                @RequestBody @Valid ProdutoDTO dto) {
+        return service.buscar(id).map(existing -> {
+            existing.setNome(dto.nome());
+            existing.setPreco(dto.preco());
+            // Se sua entidade tiver 'descricao', inclua no DTO e no Mapper, e descomente:
+            // existing.setDescricao(dto.descricao());
+            Produto saved = service.salvar(existing);
+            return ResponseEntity.ok(ProdutoMapper.toDTO(saved));
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        if (service.buscar(id).isEmpty()) return ResponseEntity.notFound().build();
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
-
