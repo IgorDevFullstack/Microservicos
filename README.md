@@ -65,6 +65,7 @@ Cada microsserviço possui:
 ✔ Suas próprias rotas e documentação
 
 📦 Como Executar o Projeto
+
 1️⃣ Pré-requisitos
 
 Docker instalado
@@ -161,3 +162,4 @@ Status do Projeto
 
 📌 Em desenvolvimento ativo
 📌 Arquitetura escalável, ideal para vagas de backend e sistemas distribuídos
+
