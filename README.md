@@ -1,148 +1,163 @@
-# 🛠️ Microservices Project: Customer & Product
+🧩 Microservices Architecture — Customer & Product
 
-This project demonstrates a **microservices architecture** built with **Java 17 + Spring Boot 3**, **PostgreSQL**, **Docker**, and **Swagger/OpenAPI**.  
-The system is composed of two independent services:
+Este projeto demonstra uma arquitetura completa de microsserviços, utilizando Java 17 + Spring Boot 3, PostgreSQL, Docker, Swagger/OpenAPI e práticas modernas de desenvolvimento backend.
 
-- **Customer Service** → Manage customers  
-- **Product Service** → Manage products  
+A aplicação é composta por dois serviços independentes, cada um com seu próprio banco de dados:
 
-Each service has its own database and can be scaled independently.
+🧍 Customer Service — Gestão de clientes
 
----
+📦 Product Service — Gestão de produtos
 
-## 🚀 Tech Stack
+Cada serviço é isolado, escalável e versionável de forma independente.
 
-- Java 17  
-- Spring Boot 3.2  
-- Spring Data JPA  
-- PostgreSQL  
-- Docker & Docker Compose  
-- Springdoc OpenAPI (Swagger UI)  
-- Lombok  
-- pgAdmin 4  
+🚀 Tecnologias Utilizadas
 
----
+Back-end
 
-## 🏗️ Architecture
+Java 17
 
-+------------------+ +-------------------+
-| Customer Service| | Product Service |
-| (Spring Boot) | | (Spring Boot) |
-| Port: 8081 | | Port: 8082 |
-+---------+--------+ +---------+---------+
-| |
-v v
-+------------------+ +-------------------+
-| PostgreSQL | | PostgreSQL |
-| DB: clientedb | | DB: produtodb |
-| Port: 5433 | | Port: 5434 |
-+------------------+ +-------------------+
+Spring Boot 3.x
 
+Spring Web
 
----
+Spring Data JPA
 
-## 📦 Getting Started
+Spring Validation
 
-### 1) Requirements
-- [Docker](https://www.docker.com/products/docker-desktop) installed and running  
-- [Maven](https://maven.apache.org/) (if you want to run locally without Docker)
+Swagger / OpenAPI 3
 
-### 2) Clone the repository
-```bash
-git clone https://github.com/your-username/Microservices.git
-cd Microservices
+Lombok
 
-3) Build and run with Docker
+Banco & Infra
+
+PostgreSQL
+
+Docker & Docker Compose
+
+pgAdmin 4
+
+🏛️ Arquitetura
+
+                +----------------------+
+                |   Customer Service   |
+                |   Port: 8081         |
+                +---------+------------+
+                          |
+                          v
+                +----------------------+
+                |   PostgreSQL         |
+                |   DB: clientedb      |
+                +----------------------+
+
+                +----------------------+
+                |   Product Service    |
+                |   Port: 8082         |
+                +---------+------------+
+                          |
+                          v
+                +----------------------+
+                |   PostgreSQL         |
+                |   DB: produtodb      |
+                +----------------------+
+Cada microsserviço possui:
+✔ Seu próprio banco
+✔ Seu próprio container
+✔ Suas próprias rotas e documentação
+
+📦 Como Executar o Projeto
+1️⃣ Pré-requisitos
+
+Docker instalado
+
+Docker Compose
+
+Git
+
+(Opcional) Maven, caso queira rodar fora do Docker
+
+2️⃣ Clonar o repositório
+
+git clone https://github.com/your-username/microservices.git
+cd microservices
+
+3️⃣ Subir tudo com Docker 🐳
 
 docker compose build
 docker compose up -d
 
-4) Check running containers
+4️⃣ Verificar containers ativos
 
 docker ps
 
-Expected containers:
+| Serviço           | Porta |
+| ----------------- | ----- |
+| customer-service  | 8081  |
+| product-service   | 8082  |
+| postgres-clientes | 5433  |
+| postgres-produtos | 5434  |
+| pgadmin           | 5050  |
 
-    customer-service → port 8081
+📚 Documentação das APIs (Swagger)
 
-    product-service → port 8082
+| Serviço      | URL                                                                            |
+| ------------ | ------------------------------------------------------------------------------ |
+| **Customer** | [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html) |
+| **Product**  | [http://localhost:8082/swagger-ui.html](http://localhost:8082/swagger-ui.html) |
 
-    postgres-clientes → port 5433
-
-    postgres-produtos → port 5434
-
-    pgadmin → port 5050
-
-📖 API Documentation
-
-Each service exposes its own Swagger/OpenAPI docs:
-
-    Customer Service → http://localhost:8081/swagger-ui.html
-
-Product Service → http://localhost:8082/swagger-ui.html
-🧪 Example Requests (cURL)
-Create a Customer
+🧪 Exemplos de Requisições (cURL)
 
 curl -X POST http://localhost:8081/customers \
- -H "Content-Type: application/json" \
- -d '{"name":"Maria Silva","email":"maria@email.com","phone":"11999999999"}'
+-H "Content-Type: application/json" \
+-d '{"name":"Maria Silva","email":"maria@email.com","phone":"11999999999"}'
 
-List Customers
 
-curl http://localhost:8081/customers
-
-Create a Product
-
-curl -X POST http://localhost:8082/products \
- -H "Content-Type: application/json" \
- -d '{"name":"Mechanical Keyboard","price":250.0,"description":"Blue switch"}'
-
-List Products
+📄 Listar Produtos
 
 curl http://localhost:8082/products
 
-🗂️ Accessing Database via pgAdmin
 
-    URL: http://localhost:5050
+🗂️ Acessar banco pelo pgAdmin
 
-    Login: admin@admin.com
+📌 URL: http://localhost:5050
+📌 Login: admin@admin.com
+📌 Senha: admin
 
-    Password: admin
+Depois registre os servidores:
 
-Add new servers:
+🔹 Customer DB
 
-    Customer DB
+Host: postgres-clientes
 
-        Host: postgres-clientes
+Port: 5432
 
-        Port: 5432
+User: postgres
 
-        User: postgres
+Password: senha
 
-        Password: senha
+Database: clientedb
 
-        Database: clientedb
+🔹 Product DB
 
-    Product DB
+Host: postgres-produtos
 
-        Host: postgres-produtos
+Port: 5432
 
-        Port: 5432
+User: postgres
 
-        User: postgres
+Password: senha
 
-        Password: senha
+Database: produtodb
 
-        Database: produtodb
+🛠️ Roadmap de Evolução
 
-✅ Roadmap
+Paginação e filtros avançados
+Testes automatizados com Testcontainers
+Healthchecks no docker-compose.yml
+CI/CD com GitHub Actions
+Deploy em cloud (AWS, Render, Railway etc.)
+Service Discovery + API Gateway (Eureka/Cloud Gateway).
 
-Implement pagination and filters in endpoints
+Status do Projeto
 
-Add integration tests with Testcontainers
-
-Add healthchecks in docker-compose.yml
-
-Setup CI/CD with GitHub Actions
-
-Deploy to cloud (AWS/GCP/Azure/Render)
+📌 Em desenvolvimento ativo
+📌 Arquitetura escalável, ideal para vagas de backend e sistemas distribuídos
